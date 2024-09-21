@@ -11,6 +11,7 @@ This project aims to succesfully simulate the game of Othello over a network con
 Inclusions:
 - Two clients will be able to connect to a server host.
 - Clients will be able to engage in a game of Othello.
+- The game will be displayed and interacted with within a terminal window.
 
 Exclusions:
 - [List any tasks, features, or components that will not be included in the project.]
@@ -30,7 +31,6 @@ Key Milestones:
 
 Task Breakdown:
 - Complete Sprint 0 (Sep 20, 2024)
-- [Create a detailed breakdown of tasks, assigning estimated hours or days to each.]
 
 ## Technical Requirements:
 Hardware:
