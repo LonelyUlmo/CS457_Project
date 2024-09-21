@@ -8,7 +8,8 @@ It will include a server and two clients. More information will be updated as th
 is fleshed out.
 
 ## **How to play:**
-
+...
 ## **Technologies used:**
-
+...
 ## **Additional Resources:**
+...
