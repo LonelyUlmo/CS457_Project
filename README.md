@@ -1,5 +1,5 @@
 # CS457_Project
-This project is to create a game using networking.
+This project is to recreate the game Othello over a network.
 
 **Author**
 Jonathan Evans
