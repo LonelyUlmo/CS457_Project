@@ -9,7 +9,9 @@ This project aims to succesfully simulate the game of Othello over a network con
 
 ## Scope:
 Inclusions:
-- [List the specific tasks, features, or components that will be included in the project.]
+- Two clients will be able to connect to a server host.
+- Clients will be able to engage in a game of Othello.
+
 Exclusions:
 - [List any tasks, features, or components that will not be included in the project.]
 
@@ -18,24 +20,30 @@ Exclusions:
 
 ## Timeline:
 Key Milestones:
-- [Outline the major milestones or checkpoints throughout the project, with estimated completion dates.]
+- Complete Project (X)
+- Sprint 0: Setup Github (Sep 22, 2024)
+- Sprint 1: Implement TCP Server/Client (Oct 6, 2024)
+- Sprint 2: Design and Implement Message Protocol (Oct 20, 2024)
+- Sprint 3: Multi-Player Functionality, Synchronize State Across Clients (Nov 3, 2024)
+- Sprint 4: Game Play, Game State, UI (Nov 17, 2024)
+- Sprint 5: Implement Error Handling and Testing (Dec 6, 2024)
+
 Task Breakdown:
+- Complete Sprint 0 (Sep 20, 2024)
 - [Create a detailed breakdown of tasks, assigning estimated hours or days to each.]
 
 ## Technical Requirements:
 Hardware:
 - [Specify any hardware requirements, such as servers, networking equipment, or specific devices.]
+
 Software:
-[List the necessary software tools, programming languages (Python), libraries (socket, threading, etc.), and operating systems.]
+- [List the necessary software tools, programming languages (Python), libraries (socket, threading, etc.), and operating systems.]
 
 ## Assumptions:
 [State any assumptions that are being made about the project, such as network connectivity or availability of resources.]
 
 ## Roles and Responsibilities:
-[Define the roles of team members, including project manager, developers, testers, etc., and their responsibilities.]
-
-## Communication Plan:
-[Outline the communication channels and frequency for project updates, meetings, and decision-making.]
+Sole Devloper: Jonathan Evans
 
 ## Additional Notes:
 [Include any other relevant information or considerations that are specific to your project.]
