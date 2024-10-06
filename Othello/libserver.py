@@ -91,9 +91,8 @@ class Message:
             query = self.request.get("value")
             answer = request_search.get(query) or f'No match for "{query}".'
             content = {"result": answer}
-        # else:
-        #     content = {"result": f'Error: invalid action "{action}".'}
-        content = {"This is the content of a response from the server."} # Temp line
+        else:
+            content = {"result": f'Error: invalid action "{action}".'}
         content_encoding = "utf-8"
         response = {
             "content_bytes": self._json_encode(content, content_encoding),
