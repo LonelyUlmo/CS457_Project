@@ -8,7 +8,11 @@ It will include a server and two clients. More information will be updated as th
 is fleshed out.
 
 ## **Current Functionality:**
+Run this script to start the server:
+    python3 CS457/Term_Project/CS457_Project/server.py 0.0.0.0 12345
 
+Run this script to have a client connect to the server:
+    python3 CS457/Term_Project/CS457_Project/client.py 0.0.0.0 12345 "search" 123
 
 ## **How to play:**
 ...
