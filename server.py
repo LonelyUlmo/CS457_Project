@@ -7,12 +7,26 @@ import libserver
 
 sel = selectors.DefaultSelector()
 
+players = {}
+# How many players exist:
+#   if 1: 
+#       "Waiting for an opponent..."
+#   if 2:
+#       "Opponent found! Game Beginning:"
+# Drop any extra players:
+#   "Game room is already full. Find another server."
+
 def accept_wrapper(sock):
     conn, addr = sock.accept() # Should be ready to read
     print("accepted connection from", addr)
     conn.setblocking(False)
     message = libserver.Message(sel, conn, addr)
     sel.register(conn, selectors.EVENT_READ, data=message)
+
+# put this in libserver.py instead?
+# No, cuz a game will consist of multiple messages, right?
+def handle_player():
+    pass
 
 if len(sys.argv) != 3:
     print("usage:", sys.argv[0], "<host> <port>")
@@ -27,15 +41,6 @@ lsock.listen()
 print("listening on", (host, port))
 lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
-
-# players = { connection_1, connection_2 }
-# How many players exist:
-#   if 1: 
-#       "Waiting for an opponent..."
-#   if 2:
-#       "Opponent found! Game Beginning:"
-# Drop any extra players:
-#   "Game room is already full. Find another server."
 
 try:
     while True:
