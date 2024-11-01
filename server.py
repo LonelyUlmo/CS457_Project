@@ -28,16 +28,28 @@ print("listening on", (host, port))
 lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
 
+# players = { connection_1, connection_2 }
+# How many players exist:
+#   if 1: 
+#       "Waiting for an opponent..."
+#   if 2:
+#       "Opponent found! Game Beginning:"
+# Drop any extra players:
+#   "Game room is already full. Find another server."
+
 try:
     while True:
         events = sel.select(timeout=None) # TODO: can this handle multiple connections?
+        # make sure that any methods that should only be called once are either checking a state variable themselves, 
+        # or the state variable set by the method is checked by the caller.
         for key, mask in events:
             if key.data is None:
                 accept_wrapper(key.fileobj)
             else:
                 message = key.data
                 try:
-                    message.process_events(mask)
+                    message.process_events(mask) # What happens if this is called multiple times on the same connection?
+                                                 # It may only work the first time.
                 except Exception:
                     print(
                         "main: error: exception for",
