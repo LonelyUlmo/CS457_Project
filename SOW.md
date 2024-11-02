@@ -14,9 +14,13 @@ Inclusions:
 - The game will be displayed and interacted with within a terminal window.
 
 Exclusions:
-- [List any tasks, features, or components that will not be included in the project.]
+- The server will only handle two clients.
+- The server will only handle one iteration of a game.
 
 ## Deliverables:
+- Server Logging
+- Synchronized game-state between server and clients
+- Enforced turns between clients
 [List the expected outputs or deliverables from the project, such as a working Python script, documentation, or presentations.]
 
 ## Timeline:
