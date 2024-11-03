@@ -9,10 +9,10 @@ is fleshed out.
 
 ## **Current Functionality:**
 Run this command to start the server:
-    python3 ./CS457_Project/server.py 0.0.0.0 12345
+    python3 server.py 0.0.0.0 12345
 
 Run this command to have a client connect to the server:
-    python3 ./CS457_Project/client.py 0.0.0.0 12345 "join_game" 123
+    python3 client.py 0.0.0.0 12345 "join_game" 123
 
 ## **How to play:**
 ...
@@ -34,3 +34,13 @@ Run this command to have a client connect to the server:
     - Hopefully, I can just change how it opens and closes connections.
 - Implemented first draft of Othello Game model:
     - It has a board and can update the board. (I'll want to have the server send an updated board-state to the clients after each player-turn.)
+    - It now simulates turns
+- TODO:
+    - Othello game needs to handle:
+        - moves that are out of bounds
+        - _updateInDirection() needs to stop at the walls.
+        - detect end of game
+        - detect case where player has no valid moves, so they forfit their turn.
+    - Logging
+    - Configure client/server connections, keep them open, and enable "conversations"(multiple messages being sent back and forth)
+    - Update game-state from server to all clients

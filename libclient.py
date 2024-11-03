@@ -4,6 +4,8 @@ import json
 import io
 import struct
 
+import othello
+
 class Message:
     def __init__(self, selector, sock, addr, request):
         self.selector = selector
@@ -16,6 +18,8 @@ class Message:
         self._jsonheader_len = None
         self.jsonheader = None
         self.response = None
+
+        self.game = othello.Othello(othello.Role.CLIENT)
 
     def _set_selector_events_mask(self, mode):
         """Set selector to listen for events: mode is 'r', 'w', or 'rw'."""

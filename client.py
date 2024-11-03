@@ -68,8 +68,10 @@ try:
         # After processing events, ask the user if they want to send another message
         user_input = input("Send another message? (y/n): ").strip().lower()
         if user_input == 'y':
-            new_action = input("Enter the new action: ").strip()
-            new_value = input("Enter the new value: ").strip()
+            # new_action = input("Enter the new action: ").strip()
+            # new_value = input("Enter the new value: ").strip()
+            new_action = "join_game"
+            new_value = ""
             new_request = create_request(new_action, new_value)
             message.request = new_request  # Update the request in the message object
             message._request_queued = False  # Reset the flag to queue the new request

@@ -4,6 +4,8 @@ import json
 import io
 import struct
 
+import othello
+
 request_search = {
     "morpheus": "Follow the white rabbit. \U0001f430",
     "ring": "In the caves beneath the Misty Mountains. \U0001f48d",
@@ -21,6 +23,8 @@ class Message:
         self.jsonheader = None
         self.request = None
         self.response_created = False
+
+        self.game = othello.Othello(othello.Role.SERVER)
 
     def _set_selector_events_mask(self, mode):
         """Set selector to listen for events: mode is 'r', 'w', or 'rw'."""
@@ -60,7 +64,7 @@ class Message:
                 self._send_buffer = self._send_buffer[sent:]
                 # Close when the buffer is drained. The response has been sent.
                 if sent and not self._send_buffer:
-                    self.close()
+                    self.close()                                                    # TODO: Do I want to change this? It might be "stopping the conversation".
 
     def _json_encode(self, obj, encoding):
         return json.dumps(obj, ensure_ascii=False).encode(encoding)
@@ -86,8 +90,17 @@ class Message:
         return message
 
     def _create_response_json_content(self): # TODO: alter this. This is not built for Othello functionality.
+        # Game moves: join_game, take_turn, update_game, 
         action = self.request.get("action")
-        if action == "search":
+        if action == "join_game":
+            query = self.request.get("value")
+            answer = request_search.get(query) or f'No match for "{query}".'
+            content = {"result": answer}
+        elif action == "take_turn":
+            query = self.request.get("value")
+            answer = request_search.get(query) or f'No match for "{query}".'
+            content = {"result": answer}
+        elif action == "update_game":
             query = self.request.get("value")
             answer = request_search.get(query) or f'No match for "{query}".'
             content = {"result": answer}
