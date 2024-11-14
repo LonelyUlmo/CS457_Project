@@ -38,10 +38,10 @@ Task Breakdown:
 
 ## Technical Requirements:
 Hardware:
-- [Specify any hardware requirements, such as servers, networking equipment, or specific devices.]
+- This is being run on CSU's remote linux machines. The server is run on blowfish and the clients are run on phoenix.
 
 Software:
-- [List the necessary software tools, programming languages (Python), libraries (socket, threading, etc.), and operating systems.]
+- All libraries needed should be on the school's machines
 
 ## Assumptions:
 [State any assumptions that are being made about the project, such as network connectivity or availability of resources.]

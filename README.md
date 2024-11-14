@@ -44,3 +44,9 @@ Run this command to have a client connect to the server:
     - Logging
     - Configure client/server connections, keep them open, and enable "conversations"(multiple messages being sent back and forth)
     - Update game-state from server to all clients
+
+11.13.2024
+- Today, I'm practically starting over from the beginning. I'm going to try to get a chatroom set up between the client and server on client_simple.py and server_simple.py.
+- I realized that the server is set to '0.0.0.0', but the client needs the IP address of the host machine. I found the IP address of the blowfish machine with this terminal comand: 'hostname -I'. From here on, we'll keep blowfish as the host machine and hope the IP address doesn't change.
+- I'm not trying to get the client to be able to send message multiple times. I have made an attempt at this and having the server reciece multiple messages from the client.
+- I'm running into an error: when the client sends a second message, it gets the first message echoed back from the server. I'm not sure if this is a bug in the client or the server. I'm thinking of asking the professor for help. It would be a good checkpoint for me to catch up with him.
