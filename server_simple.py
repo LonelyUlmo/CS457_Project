@@ -4,19 +4,21 @@ import selectors
 import types
 import logging
 
-# Configure logging
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    handlers=[
-                        logging.FileHandler("server.log"),
-                        logging.StreamHandler(sys.stdout)
-                    ])
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(message)s',
+    handlers=[
+        logging.FileHandler("server.log", mode='w'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger()
 
 sel = selectors.DefaultSelector()
 
 def accept_wrapper(sock):
     conn, addr = sock.accept()  # Accept the connection
-    logging.info(f"Accepted connection from {addr}")
+    logger.info(f"Accepted connection from {addr}")
     conn.setblocking(False)
     data = types.SimpleNamespace(addr=addr, outb=b"")
     sel.register(conn, selectors.EVENT_READ | selectors.EVENT_WRITE, data=data)
@@ -27,18 +29,18 @@ def service_connection(key, mask):
     if mask & selectors.EVENT_READ:
         recv_data = sock.recv(4096)  # Receive data
         if recv_data:
-            logging.info(f"Received \"{recv_data.decode()}\" from {data.addr}")
+            logger.info(f"Received \"{recv_data.decode()}\" from {data.addr}")
             data.outb = recv_data  # Prepare to echo data back
         else:
             close_connection(sock, data)
 
     if mask & selectors.EVENT_WRITE and data.outb:
-        logging.info(f"Echoing {repr(data.outb)} to {data.addr}")
+        logger.info(f"Echoing {repr(data.outb)} to {data.addr}")
         sent = sock.send(data.outb)  # Echo data
         data.outb = data.outb[sent:]  # Clear sent data
 
 def close_connection(sock, data):
-    logging.info(f"Closing connection to {data.addr}")
+    logger.info(f"Closing connection to {data.addr}")
     sel.unregister(sock)
     sock.close()
 
@@ -50,7 +52,7 @@ port = 12358
 lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 lsock.bind((host, port))
 lsock.listen()
-logging.info(f"Listening on {(host, port)}")
+logger.info(f"Listening on {(host, port)}")
 lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
 
@@ -63,6 +65,7 @@ try:
             else:
                 service_connection(key, mask)
 except KeyboardInterrupt:
-    logging.info("Caught keyboard interrupt, exiting")
+    logger.critical("Caught keyboard interrupt, exiting")
 finally:
     sel.close()
+    logging.shutdown()  # Flush and close all logging handlers

@@ -53,3 +53,4 @@ Run this command to have a client connect to the server:
 
 11.14.2024
 - Proffessor Haefner gave me some client code to help me simplify things down. I've also simplified the server code and implemented logging on the server side.
+- I was having some bugs with the logging, so I tweaked the code a bit. It now is set to "w" mode which overwrites any previous file.
