@@ -1,67 +1,71 @@
 import sys
 import socket
 import selectors
-import traceback
+import types
+import logging
 
-import libserver
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(message)s',
+    handlers=[
+        logging.FileHandler("server.log", mode='w'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger()
 
 sel = selectors.DefaultSelector()
 
-players = {}
-# How many players exist:
-#   if 1: 
-#       "Waiting for an opponent..."
-#   if 2:
-#       "Opponent found! Game Beginning:"
-# Drop any extra players:
-#   "Game room is already full. Find another server."
-
 def accept_wrapper(sock):
-    conn, addr = sock.accept() # Should be ready to read
-    print("accepted connection from", addr)
+    conn, addr = sock.accept()  # Accept the connection
+    logger.info(f"Accepted connection from {addr}")
     conn.setblocking(False)
-    message = libserver.Message(sel, conn, addr)
-    sel.register(conn, selectors.EVENT_READ, data=message)
+    data = types.SimpleNamespace(addr=addr, outb=b"")
+    sel.register(conn, selectors.EVENT_READ | selectors.EVENT_WRITE, data=data)
 
-# put this in libserver.py instead?
-# No, cuz a game will consist of multiple messages, right?
-def handle_player():
-    pass
+def service_connection(key, mask):
+    sock = key.fileobj
+    data = key.data
+    if mask & selectors.EVENT_READ:
+        recv_data = sock.recv(4096)  # Receive data
+        if recv_data:
+            logger.info(f"Received \"{recv_data.decode()}\" from {data.addr}")
+            data.outb = recv_data  # Prepare to echo data back
+        else:
+            close_connection(sock, data)
 
-if len(sys.argv) != 3:
-    print("usage:", sys.argv[0], "<host> <port>")
-    sys.exit(1)
+    if mask & selectors.EVENT_WRITE and data.outb:
+        logger.info(f"Echoing {repr(data.outb)} to {data.addr}")
+        sent = sock.send(data.outb)  # Echo data
+        data.outb = data.outb[sent:]  # Clear sent data
 
-host, port = sys.argv[1], int(sys.argv[2])
+def close_connection(sock, data):
+    logger.info(f"Closing connection to {data.addr}")
+    sel.unregister(sock)
+    sock.close()
+
+# Main program setup
+host = '0.0.0.0'  # Listen on all network interfaces
+port = 12358
+
+# Set up the listening socket and register it with the selector
 lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Avoid bind() exception: OSError: [Errno 48] Address already in use
-lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # Note: This helps to avoid the "Address already in use" error.
 lsock.bind((host, port))
 lsock.listen()
-print("listening on", (host, port))
+logger.info(f"Listening on {(host, port)}")
 lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
 
+# Main event loop
 try:
     while True:
-        events = sel.select(timeout=None) # TODO: can this handle multiple connections?
-        # make sure that any methods that should only be called once are either checking a state variable themselves, 
-        # or the state variable set by the method is checked by the caller.
-        for key, mask in events:
+        for key, mask in sel.select(timeout=None):
             if key.data is None:
                 accept_wrapper(key.fileobj)
             else:
-                message = key.data
-                try:
-                    message.process_events(mask) # What happens if this is called multiple times on the same connection?
-                                                 # It may only work the first time.
-                except Exception:
-                    print(
-                        "main: error: exception for",
-                        f"{message.addr}:\n{traceback.format_exc()}",
-                    )
-                    message.close()
+                service_connection(key, mask)
 except KeyboardInterrupt:
-    print("caught keyboard interrupt, exiting")
+    logger.critical("Caught keyboard interrupt, exiting")
 finally:
     sel.close()
+    logging.shutdown()  # Flush and close all logging handlers
