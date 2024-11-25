@@ -1,5 +1,6 @@
 import socket
 import selectors
+import json
 
 sel = selectors.DefaultSelector()
 
@@ -7,27 +8,28 @@ sel = selectors.DefaultSelector()
 host = '129.82.45.121' # this is the IP address of the blowfish machine (I hope this doesn't change periodically. Idk how to find it other than running the 'hostname -I' command on the host machine)
 port = 12358
 
-# Create a client socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Connect to the server
 client_socket.connect((host, port))
 
+server_response = client_socket.recv(4096)
+print(f"Server says: {server_response.decode()}")
+
 while 1:
-    # Get user input
-    message = input("Enter a message: ")
+    # message = input("Enter a message: ")
+    action = input("Enter an action: ")
+    message = {
+        "action": action
+    }
 
     # Send the input to the server
-    client_socket.send(message.encode())
+    client_socket.send(json.dumps(message).encode())
 
     # Receive the server's response
-    server_response = client_socket.recv(1024)
-
-    # Print the server's response
+    server_response = client_socket.recv(4096)
     print(f"Server responded with: {server_response.decode()}")
 
     # Exit condition
-    if message == "exit":
+    if action == "exit":
         break
 
-# Close the client socket
 client_socket.close()
