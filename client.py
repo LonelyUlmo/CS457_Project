@@ -16,7 +16,8 @@ print(f"Server says: {server_response.decode()}")
 
 while 1:
     # message = input("Enter a message: ")
-    action = input("Enter an action: ")
+    print("Enter an action: ")
+    action = input()
     message = {
         "action": action
     }

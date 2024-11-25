@@ -57,3 +57,9 @@ Run this command to have a client connect to the server:
 
 11.16.2024
 - Removed some redundant files and renamed some other files.
+
+11.25.2024
+- Switching to Tic Tac Toe so the game logic isn't to difficult to figure out.
+- I've got the Tic Tac Toe game logic written.
+- I need to figure out how clients are going to be both listening to the server and listening for user input.
+- I need to figure out how the server will concurrently handle game logic, listening to clients, and messaging clients.
