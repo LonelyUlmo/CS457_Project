@@ -69,3 +69,7 @@ Run this command to have a client connect to the server:
 
 11.26.2024
 - Now assigns players a team when they connect.
+- Now begins a game once two players are connected
+- Sends the game board to the players
+- TODO:
+    - have client handle game board message and user input.

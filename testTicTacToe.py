@@ -6,7 +6,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s %(message)s',
     handlers=[
-        logging.FileHandler("server.log", mode='w'),
+        logging.FileHandler("temp.log", mode='w'),
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -24,14 +24,10 @@ moves = [
     ("C2", "X", "X"),
     ("C1", "O", "O")
 ]
-print(game.liveGame)
 for move in moves:
-    # print(move)
     game.takeTurn(move[0], move[1], move[2])
-    # game.printBoard()
-    # print(game.turn)
-
-print(game.liveGame)
+    
+print(game.getPrintableBoard())
 
 handlers = logger.handlers[:]
 for handler in handlers:

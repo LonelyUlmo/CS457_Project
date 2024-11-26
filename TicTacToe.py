@@ -88,7 +88,19 @@ class TicTacToe:
         for row in self.ROWs:
             print(f"{row} | " + "".join(f"{self.board[f'{col}{row}']:^6}" for col in self.COLs))
         print()
+    
+    def getPrintableBoard(self):
+        board_output = ""
+        board_output += "      " + "     ".join(col for col in self.COLs) + "\n"
+        for row in self.ROWs:
+            board_output += f"{row} | " + "".join(f"{self.board[f'{col}{row}']:^6}" for col in self.COLs) + "\n"
+        board_output += "\n"
+        # Return the final string
+        return board_output
 
     def isLive(self):
         self.logger.info(f"isLive() is called.")
         return self.liveGame
+    
+    def turn(self):
+        return self.turn

@@ -36,8 +36,8 @@ def accept_wrapper(sock):
     # Save connection to clients
     clientID = get_new_client_ID()
     clients[conn] = clientID
-    team = accept_player(conn)
     logger.info(f"[accept_wrapper] Saved {addr} to list of Clients.")
+    team = accept_player(conn)
     # Send welcome message
     welcome_message = {
         "message": "Connection Accepted.",
@@ -46,6 +46,17 @@ def accept_wrapper(sock):
         }
     conn.send(json.dumps(welcome_message).encode())
     logger.info(f"[accept_wrapper] Sent welcome message to {addr}.")
+    # Try to start a game
+    if check_game_ready():
+        # send board to players
+        message = {
+            "message": "Let the game begin!",
+            "turn": game.turn,
+            "board": game.getPrintableBoard()
+        }
+        X_player.send(json.dumps(message).encode())
+        O_player.send(json.dumps(message).encode())
+        logger.info(f"[accept_wrapper] Game Start message sent to players.")
 
 def get_new_client_ID():
     global client_count
@@ -62,6 +73,9 @@ def accept_player(conn):
         O_player = conn
         return "O"
     return "No team"
+
+def check_game_ready():
+    return X_player != None and O_player != None
 
 def remove_player(sock):
     global X_player, O_player
