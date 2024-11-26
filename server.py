@@ -36,14 +36,39 @@ def accept_wrapper(sock):
     # Save connection to clients
     clientID = get_new_client_ID()
     clients[conn] = clientID
+    team = accept_player(conn)
     logger.info(f"[accept_wrapper] Saved {addr} to list of Clients.")
     # Send welcome message
     welcome_message = {
         "message": "Connection Accepted.",
-        "clientID": clientID
+        "clientID": clientID,
+        "team": team
         }
     conn.send(json.dumps(welcome_message).encode())
     logger.info(f"[accept_wrapper] Sent welcome message to {addr}.")
+
+def get_new_client_ID():
+    global client_count
+    new_ID = client_count
+    client_count += 1
+    return new_ID
+
+def accept_player(conn):
+    global X_player, O_player
+    if X_player == None:
+        X_player = conn
+        return "X"
+    elif O_player == None:
+        O_player = conn
+        return "O"
+    return "No team"
+
+def remove_player(sock):
+    global X_player, O_player
+    if X_player == sock:
+        X_player = None
+    elif O_player == sock:
+        O_player = None
 
 def service_connection(key, mask):
     sock = key.fileobj
@@ -58,23 +83,19 @@ def service_connection(key, mask):
     if mask & selectors.EVENT_WRITE and data.outb:
         handle_client_message(sock, data)
 
-def get_new_client_ID():
-    global client_count
-    new_ID = client_count
-    client_count += 1
-    return new_ID
-
 def handle_client_message(sock, data):
     logger.info(f"[handle_client_message] Echoing {repr(data.outb)} to {data.addr}")
     sent = sock.send(data.outb)  # Echo data
     data.outb = data.outb[sent:]  # Keep the part of message that hasn't been sent
 
 def close_client_connection(sock, data):
-    logger.info(f"close_client_connection] Closing connection to {data.addr}, client: {clients[sock]}")
+    logger.info(f"[close_client_connection] Closing connection to {data.addr}, client: {clients[sock]}")
     sel.unregister(sock)
     sock.close()
     del clients[sock]
+    remove_player(sock)
 
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 # Main program setup
 host = '0.0.0.0'  # Listen on all network interfaces
 port = 12359
@@ -89,6 +110,8 @@ sel.register(lsock, selectors.EVENT_READ, data=None)
 
 # Keep track of clients
 clients = {}
+X_player = None
+O_player = None
 
 # Initialize the Game
 game = TicTacToe.TicTacToe(TicTacToe.Role.SERVER, logger)

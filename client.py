@@ -6,7 +6,7 @@ sel = selectors.DefaultSelector()
 
 # main program
 host = '129.82.45.121' # this is the IP address of the blowfish machine (I hope this doesn't change periodically. Idk how to find it other than running the 'hostname -I' command on the host machine)
-port = 12358
+port = 12359
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((host, port))

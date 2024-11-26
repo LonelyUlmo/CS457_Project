@@ -66,3 +66,6 @@ Run this command to have a client connect to the server:
 - I'm having these weird residual issues with the logs. I think the TicTacToe class having a copy of the logger is causing issues. I'm going to copy it into the server.py file for simplicity.
 - I'm not sure what is up with the logs. Might have to come back to it later.
 - Next, I need to bootstrap getting two clients to play a game of tic tac toe. Can refine the process once I get that done.
+
+11.26.2024
+- Now assigns players a team when they connect.
