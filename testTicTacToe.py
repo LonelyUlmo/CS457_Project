@@ -1,8 +1,18 @@
 import TicTacToe
+import logging
+import sys
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(message)s',
+    handlers=[
+        logging.FileHandler("server.log", mode='w'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger()
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-game = TicTacToe.TicTacToe(TicTacToe.Role.SERVER)
-board = game.board
+game = TicTacToe.TicTacToe(TicTacToe.Role.SERVER, logger)
 # Print initial board
 game.printBoard()
 
@@ -22,3 +32,10 @@ for move in moves:
     # print(game.turn)
 
 print(game.liveGame)
+
+handlers = logger.handlers[:]
+for handler in handlers:
+    handler.close()
+    logger.removeHandler(handler)
+
+logging.shutdown()

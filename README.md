@@ -63,3 +63,6 @@ Run this command to have a client connect to the server:
 - I've got the Tic Tac Toe game logic written.
 - I need to figure out how clients are going to be both listening to the server and listening for user input.
 - I need to figure out how the server will concurrently handle game logic, listening to clients, and messaging clients.
+- I'm having these weird residual issues with the logs. I think the TicTacToe class having a copy of the logger is causing issues. I'm going to copy it into the server.py file for simplicity.
+- I'm not sure what is up with the logs. Might have to come back to it later.
+- Next, I need to bootstrap getting two clients to play a game of tic tac toe. Can refine the process once I get that done.
