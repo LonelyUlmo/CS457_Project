@@ -40,9 +40,7 @@ def accept_wrapper(sock):
     team = accept_player(conn)
     # Send welcome message
     welcome_message = {
-        "message": "Connection Accepted.",
-        "clientID": clientID,
-        "team": team
+        "message": "Connection Accepted."
         }
     conn.send(json.dumps(welcome_message).encode())
     logger.info(f"[accept_wrapper] Sent welcome message to {addr}.")
@@ -50,6 +48,7 @@ def accept_wrapper(sock):
     if check_game_ready():
         # send board to players
         message = {
+            "protocol": "start",
             "message": "Let the game begin!",
             "turn": game.turn,
             "board": game.getPrintableBoard()
