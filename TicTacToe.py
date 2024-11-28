@@ -42,52 +42,45 @@ class TicTacToe:
         # Check for win conditions
         if self._checkWinConditions(team):
             self.liveGame = False
-            # print(f"{team} wins!")
-            self.logger.info(f"{team} wins!")
-            return
+            response = f"{team} wins!"
+            self.logger.info(response) # TODO: send to clients
+            return response
         # Check for deadlock
         if all(value != "-" for value in self.board.values()):
             self.liveGame = False
-            # print("Deadlock, there is no winner. Game over.")
-            self.logger.info("Deadlock, there is no winner. Game over.")
-            return
+            response = "Deadlock, there is no winner. Game over."
+            self.logger.info(response) # TODO: send to clients
+            return response
         # If not, iterate turn to next player.
         self.turn = "O" if self.turn == "X" else "X"
-        self.logger.info(f"Turn is passed to {self.turn}.")
-
-    def getBoardState(self):
-        self.logger.info(f"getBoardState() is called.")
-        return self.board.copy()
+        response = f"Turn is passed to {self.turn}."
+        self.logger.info(response) # TODO: send to clients
+        return response
     
-    def takeTurn(self, tile, value, team):
+    def takeTurn(self, tile, team):
         # Check if game is stil live.
         if not self.liveGame:
-            # print("The game is over. No more turns.")
-            self.logger.info("The game is over. No more turns.")
-            return
+            response = "The game is over. No more turns."
+            self.logger.info(response)
+            return response
         # Check if move is valid
         if self.turn != team:
-            # print("Invalid move. Not this player's turn.")
-            self.logger.info("Invalid move. Not this player's turn.")
-            return
+            response = "Invalid move. Not this player's turn."
+            self.logger.info(response)
+            return response
         if tile not in {"A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"}:
-            # print("Invalid move. That tile is not valid.")
-            self.logger.info("Invalid move. That tile is not valid.")
-            return
+            response = "Invalid move. That tile is not valid."
+            self.logger.info(response)
+            return response
         if self.board[tile] != "-":
-            # print("Invalid move. That tile is not blank.")
-            self.logger.info("Invalid move. That tile is not blank.")
-            return
+            response = "Invalid move. That tile is not blank."
+            self.logger.info(response)
+            return response
         # Take turn
-        self.board[tile] = value
-        self.logger.info(f"{team} takes turn and marks {tile}.")
-        self._endTurn(team)
-    
-    def printBoard(self):
-        print("      " + "     ".join(col for col in self.COLs))
-        for row in self.ROWs:
-            print(f"{row} | " + "".join(f"{self.board[f'{col}{row}']:^6}" for col in self.COLs))
-        print()
+        self.board[tile] = team
+        response = f"{team} takes turn and marks {tile}."
+        self.logger.info(response)
+        return response + "\n" + self._endTurn(team)
     
     def getPrintableBoard(self):
         board_output = ""
@@ -101,6 +94,3 @@ class TicTacToe:
     def isLive(self):
         self.logger.info(f"isLive() is called.")
         return self.liveGame
-    
-    def turn(self):
-        return self.turn

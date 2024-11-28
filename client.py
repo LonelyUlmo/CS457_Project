@@ -23,7 +23,7 @@ sel = selectors.DefaultSelector()
 
 # main program
 host = '129.82.45.121' # this is the IP address of the blowfish machine (I hope this doesn't change periodically. Idk how to find it other than running the 'hostname -I' command on the host machine)
-port = 12359
+port = 12350
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
@@ -46,50 +46,6 @@ try:
         if user_input.lower() == "exit":
             print("Disconnecting from the server...")
             break
-
-    # # Game variables
-    # team = None
-    # turn = None
-    # board = ""
-    # runloop = True
-    # userWrite = False
-
-    # server_response = client_socket.recv(4096).decode('utf-8')
-    # print(f"Server says: {server_response}")
-    # response_json = json.loads(server_response)
-    # protocol = response_json["protocol"]
-    # if (protocol == "welcome"):
-    #     print(response_json["message"])
-    #     team = response_json["team"]
-    # else:
-    #     runloop = False
-
-    # while runloop:
-    #     # Get user input
-    #     if userWrite:
-    #         print("Enter an action: ")
-    #         action = input()
-    #         message = {
-    #             "message": action
-    #         }
-    #         # Send the input to the server
-    #         client_socket.send(json.dumps(message).encode())
-
-    #     # Receive the server's response
-    #     server_response = client_socket.recv(4096).decode('utf-8')
-    #     print(f"Server says: {server_response}")
-    #     response_json = json.loads(server_response)
-    #     protocol = response_json["protocol"]
-    #     if (protocol == "start"):
-    #         print(response_json["message"])
-    #         turn = response_json["turn"]
-    #         board = response_json["board"]
-    #         print("Printing Board...")
-    #         print(board)
-
-    #     # Exit condition
-    #     if action == "exit":
-    #         break
 except Exception as e:
     print(f"Error: conection lost to the server: {e}")
 finally:

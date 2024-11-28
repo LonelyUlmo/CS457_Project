@@ -17,15 +17,15 @@ game = TicTacToe.TicTacToe(TicTacToe.Role.SERVER, logger)
 game.printBoard()
 
 moves = [
-    ("B2", "X", "X"),
-    ("A1", "O", "O"),
-    ("A2", "X", "X"),
-    ("A3", "O", "O"),
-    ("C2", "X", "X"),
-    ("C1", "O", "O")
+    ("B2", "X"),
+    ("A1", "O"),
+    ("A2", "X"),
+    ("A3", "O"),
+    ("C2", "X"),
+    ("C1", "O")
 ]
 for move in moves:
-    game.takeTurn(move[0], move[1], move[2])
+    game.takeTurn(move[0], move[1])
     
 print(game.getPrintableBoard())
 

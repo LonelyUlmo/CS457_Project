@@ -80,3 +80,12 @@ Run this command to have a client connect to the server:
         - Prints whatever the server sends to it (everything will be in a json with a "message" varriable. It prints the message.)
         - Sends whatever input the user types into the terminal to ther server.
     - The server will handle all the game logic as well as format the messages to be displayed client-side.
+
+11.28.2024
+- Got the game to work between two clients! Handles a whole game.
+- TODO: 
+    - handle players leavingearly.
+    - What happens if a third player joins?
+    - Write "help" response
+    - Accept command line args for host and port
+    - Update requriements.txt
