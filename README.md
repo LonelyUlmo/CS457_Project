@@ -83,9 +83,11 @@ Run this command to have a client connect to the server:
 
 11.28.2024
 - Got the game to work between two clients! Handles a whole game.
-- TODO: 
-    - handle players leavingearly.
-    - What happens if a third player joins?
+- Handles players leavingearly.
+- Handles extra players trying to join. Kicks them.
+- Full game can be played
+- TODO:
     - Write "help" response
     - Accept command line args for host and port
     - Update requriements.txt
+    - Server doesn't reset after a game has terminated.

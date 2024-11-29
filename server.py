@@ -31,16 +31,19 @@ def accept_wrapper(sock):
     conn.setblocking(False)
     data = types.SimpleNamespace(addr=addr, inb=b"", outb=b"")
     sel.register(conn, selectors.EVENT_READ | selectors.EVENT_WRITE, data=data)
-    # logger.info(f"[accept_wrapper] Accepted connection from {addr}.")
     logger.info(f"Accepted connection from {addr}")
     # Save connection to clients
     clientID = get_new_client_ID()
     clients[conn] = clientID
     logger.info(f"[accept_wrapper] Saved {addr} to list of Clients.")
-    team = accept_player(conn)
+    # If two players are already connected, drop this third connection
+    if X_player != None and O_player != None:
+        close_client_connection(conn, data)
+        return
+    player_team = accept_player(conn)
     # Send welcome message
     welcome_message = {
-        "message": "Connection Accepted."
+        "message": f"Connection Accepted."
         }
     conn.send(json.dumps(welcome_message).encode())
     logger.info(f"[accept_wrapper] Sent welcome message to {addr}.")
@@ -48,15 +51,15 @@ def accept_wrapper(sock):
     if check_game_ready():
         # Initialize the Game
         game = TicTacToe.TicTacToe(TicTacToe.Role.SERVER, logger)
+        game.liveGame = True
         # send starting board to players
         message_content = "Let the game begin!\n"
         message_content += game.getPrintableBoard()
         message_content += (f"It's player {game.turn}'s turn.")
-        message = {
-            "message": message_content
-        }
-        X_player.send(json.dumps(message).encode())
-        O_player.send(json.dumps(message).encode())
+        X_message = { "message": f"{message_content}\nYou are team X" }
+        O_message = { "message": f"{message_content}\nYou are team O" }
+        X_player.send(json.dumps(X_message).encode())
+        O_player.send(json.dumps(O_message).encode())
         logger.info(f"[accept_wrapper] Game Start message sent to players.")
 
 def get_new_client_ID():
@@ -101,14 +104,12 @@ def service_connection(key, mask):
         handle_client_message(sock, data)
 
 def handle_client_message(sock, data):
+    if sock != X_player and sock != O_player:
+        return
     # set up inb to go outb
     data.outb = data.inb
     client_message = data.inb
     data.inb = b"" # reset inb
-    # Send the outb
-    logger.info(f"[handle_client_message] Echoing {repr(data.outb)} to {data.addr}")
-    sent = sock.send(data.outb)  # Echo data
-    data.outb = data.outb[sent:]  # Keep the part of message that hasn't been sent
     # Handle different client messages
     message_json = json.loads(client_message.decode())
     message = message_json["message"]
@@ -119,25 +120,32 @@ def handle_client_message(sock, data):
         pass
     # disconnect player
     elif message == "exit":
+        message_json = {"message": "Your opponent left the game! You win by default."}
+        if sock == X_player:
+            O_player.send(json.dumps(message_json).encode())
+            game.liveGame = False
+            return
+        if sock == O_player:
+            X_player.send(json.dumps(message_json).encode())
+            game.liveGame = False
+            return
         pass
     # enter move into game
-    else:
+    elif game.liveGame:
         if sock == X_player:
             response = game.takeTurn(message, "X")
-            # response = game.takeTurn(message, "X") + "\n" + game.getPrintableBoard()
-            # response_json = {"message": response}
-            # X_player.send(json.dumps(response_json).encode())
-            # O_player.send(json.dumps(response_json).encode())
         elif sock == O_player:
             response = game.takeTurn(message, "O")
-            # response = game.takeTurn(message, "O") + "\n" + game.getPrintableBoard()
-            # response_json = {"message": response}
-            # X_player.send(json.dumps(response_json).encode())
-            # O_player.send(json.dumps(response_json).encode())
         response += "\n" + game.getPrintableBoard()
-        response_json = {"message": response}
+        response_json = {
+            "message": response,
+            "liveGame": game.liveGame
+            }
         X_player.send(json.dumps(response_json).encode())
         O_player.send(json.dumps(response_json).encode())
+    else:
+        response_json = {"message": "This game is not live. Waiting for opponent"}
+        sock.send(json.dumps(response_json).encode())
 
 
 def close_client_connection(sock, data):
@@ -145,6 +153,10 @@ def close_client_connection(sock, data):
     sel.unregister(sock)
     sock.close()
     del clients[sock]
+    if sock == X_player or sock == O_player:
+        message_json = {"message": "Your opponent left the game! You win by default."}
+        for conn in clients:
+            conn.send(json.dumps(message_json).encode())
     remove_player(sock)
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 

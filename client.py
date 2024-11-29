@@ -12,6 +12,12 @@ def receive_messages(sock):
                 message = response_json["message"]
                 print("\nServer says:")
                 print(f"{message}")
+                try:
+                    if response_json["liveGame"] == False:
+                        client_socket.close()
+                        break
+                except:
+                    pass
             else:
                 print("\nConnection closed by the server.")
                 break
