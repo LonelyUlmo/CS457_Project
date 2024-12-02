@@ -1,5 +1,5 @@
 # CS457_Project
-This project is to recreate the game Othello over a network.
+This project is to recreate the game Tic Tac Toe over a network.
 
 **Author**
 Jonathan Evans
@@ -8,13 +8,20 @@ It will include a server and two clients. More information will be updated as th
 is fleshed out.
 
 ## **Current Functionality:**
+This program allows two clients to connect to a server and play a game of Tic Tac Toe.
+
+## **How to play:**
+To start the server and connect as a client, follow these instructions.
+
 Run this command to start the server:
     python3 server.py 0.0.0.0 12345
 
-Run this command to have a client connect to the server:
-    python3 client.py 0.0.0.0 12345 "join_game" 123
+Run this command to have a client connect to the server (if running server on blowfish.cs.colostate.edu):
+    python3 client.py 129.82.45.121 12345 
 
-## **How to play:**
+Gameplay:
+    Once the game has started, you can enter in a tile location as your move, 'A1' for example will let you mark the A1 tile.
+    Once the board is full or a player has one, the game will be over!
 ...
 ## **Technologies used:**
 ...

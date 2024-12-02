@@ -1,16 +1,16 @@
 # Project Title:
-Othello
+Tic Tac Toe
 
 ## Team:
 Jonathan Evans
 
 ## Project Objective:
-This project aims to succesfully simulate the game of Othello over a network connection between a server and two clients.
+This project aims to succesfully simulate the game of Tic Tac Toe over a network connection between a server and two clients.
 
 ## Scope:
 Inclusions:
 - Two clients will be able to connect to a server host.
-- Clients will be able to engage in a game of Othello.
+- Clients will be able to engage in a game of Tic Tac Toe.
 - The game will be displayed and interacted with within a terminal window.
 
 Exclusions:
