@@ -91,3 +91,6 @@ Run this command to have a client connect to the server:
     - Accept command line args for host and port
     - Update requriements.txt
     - Server doesn't reset after a game has terminated.
+
+12.2.2024
+- Accepts command line arguments

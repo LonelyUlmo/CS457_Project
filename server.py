@@ -164,6 +164,15 @@ def close_client_connection(sock, data):
 host = '0.0.0.0'  # Listen on all network interfaces
 port = 12350
 
+if len(sys.argv) < 2:
+    host = '0.0.0.0'  # Listen on all network interfaces
+    port = 12350
+else:
+    logger.info(f"host: {sys.argv[1]}")
+    logger.info(f"port: {sys.argv[2]}")
+    host = sys.argv[1]
+    port = int(sys.argv[2])
+
 # Set up the listening socket and register it with the selector
 lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 lsock.bind((host, port))
