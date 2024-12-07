@@ -1,32 +1,36 @@
 # CS457_Project
-This project is to recreate the game Tic Tac Toe over a network.
+This project simulates a game Tic Tac Toe over a network.
 
 **Author**
 Jonathan Evans
 
-It will include a server and two clients. More information will be updated as the project 
-is fleshed out.
-
 ## **Current Functionality:**
 This program allows two clients to connect to a server and play a game of Tic Tac Toe.
+
+Restarting a Game:
+    The game doesn't handle starting a second game properly, so the server should be reset before each game.
+
+Logs:
+    When the server terminates, the logs will be saved under serverLogs.log
 
 ## **How to play:**
 To start the server and connect as a client, follow these instructions.
 
-Run this command to start the server:
-    python3 server.py 0.0.0.0 12345
+Running the client:
+    python3 server.py 0.0.0.0 <port-number>
+    example: python3 server.py 0.0.0.0 12345
 
-Run this command to have a client connect to the server (if running server on blowfish.cs.colostate.edu):
-    python3 client.py 129.82.45.121 12345 
+Running the server:
+    `python3 client.py <server-IP> <port-number>`
+    example: `python3 client.py 129.82.45.121 12345` (if server is on cs blowfish machine)
 
 Gameplay:
     Once the game has started, you can enter in a tile location as your move, 'A1' for example will let you mark the A1 tile.
     Once the board is full or a player has one, the game will be over!
-...
-## **Technologies used:**
-...
-## **Additional Resources:**
-...
+    If a client misenters their input, the server will inform them of the missinput and ask the client to try again.
+
+Exitting a game:
+    A client can quit the game at any time by sending `exit`.
 
 ## **Sprint Notes**
 10.5.2024 - Sprint 1 complete.

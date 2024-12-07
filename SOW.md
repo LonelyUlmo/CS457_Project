@@ -9,6 +9,7 @@ This project aims to succesfully simulate the game of Tic Tac Toe over a network
 
 ## Scope:
 Inclusions:
+- A server will host two clients for a game of Tic Tac Toe.
 - Two clients will be able to connect to a server host.
 - Clients will be able to engage in a game of Tic Tac Toe.
 - The game will be displayed and interacted with within a terminal window.
@@ -21,7 +22,7 @@ Exclusions:
 - Server Logging
 - Synchronized game-state between server and clients
 - Enforced turns between clients
-[List the expected outputs or deliverables from the project, such as a working Python script, documentation, or presentations.]
+- Handle clients disconnecting.
 
 ## Timeline:
 Key Milestones:
@@ -33,21 +34,12 @@ Key Milestones:
 - Sprint 4: Game Play, Game State, UI (Nov 17, 2024)
 - Sprint 5: Implement Error Handling and Testing (Dec 6, 2024)
 
-Task Breakdown:
-- Complete Sprint 0 (Sep 20, 2024)
-
 ## Technical Requirements:
 Hardware:
 - This is being run on CSU's remote linux machines. The server is run on blowfish and the clients are run on phoenix.
 
 Software:
-- All libraries needed should be on the school's machines
-
-## Assumptions:
-[State any assumptions that are being made about the project, such as network connectivity or availability of resources.]
+- All libraries needed should be on the school's machines or in the `requirements.txt` file
 
 ## Roles and Responsibilities:
 Sole Devloper: Jonathan Evans
-
-## Additional Notes:
-[Include any other relevant information or considerations that are specific to your project.]
